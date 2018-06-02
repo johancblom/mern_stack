@@ -8,15 +8,14 @@
                 <p class="lead text-center">
                   Create your DevConnector account
                 </p>
-                <form noValidate onSubmit={this.onSubmit}>
+                <form noValidate @submit="onSubmit">
                   <div class="form-group">
                     <input
                       type="text"
                       class="form-control form-control-lg"
                       placeholder="Name"
+                      v-model="user.name"
                       name="name"
-                      value={this.state.name}
-                      onChange={this.onChange}
                     />
                   
                   </div>
@@ -25,8 +24,8 @@
                       type="email"
                       class="form-control form-control-lg"
                       placeholder="Email Address"
+                      v-model="user.email"
                       name="email"
-                      value={this.state.email}
                       onChange={this.onChange}
                     />
                   
@@ -41,7 +40,7 @@
                       class="form-control form-control-lg"
                       placeholder="Password"
                       name="password"
-                      value={this.state.password}
+                      v-model="user.password"
                       onChange={this.onChange}
                     />
                     </div>
@@ -51,7 +50,7 @@
                       class="form-control form-control-lg"
                       placeholder="Confirm Password"
                       name="password2"
-                      value={this.state.password2}
+                      v-model="user.password2"
                       onChange={this.onChange}
                     />
                  </div>
@@ -67,7 +66,31 @@
       </div>
       </template>
       <script>
-export default {};
+export default {
+  computed: {
+    // name() {
+    //   return this.$store.state.name;
+    // },
+    email() {
+      return this.$store.state.email;
+    },
+    password() {
+      return this.$store.state.password;
+    },
+    password2() {
+      return this.$store.state.password2;
+    },
+    user() {
+      return this.$store.state.user;
+    }
+  },
+  methods: {
+    onSubmit: function(e) {
+      e.preventDefault();
+      this.$store.commit('register');
+    }
+  }
+};
 </script>
 
 <style scoped>
