@@ -14,9 +14,7 @@ export const store = new Vuex.Store({
   },
   mutations: {
     register(state) {
-      Vue.http
-        .get('http://localhost:5000/api/users/test')
-        .then(res => console.log(res));
+      Vue.http.get('/users/test').then(res => console.log(res));
     }
   }
 });
