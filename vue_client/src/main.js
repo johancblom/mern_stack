@@ -9,7 +9,7 @@ Vue.use(VueRouter);
 Vue.use(VueResource);
 
 // Register routes
-const router = new VueRouter({
+export const router = new VueRouter({
   routes: Routes,
   mode: 'history'
 });
