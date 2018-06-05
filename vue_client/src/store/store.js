@@ -29,6 +29,7 @@ export const store = new Vuex.Store({
           password2: registerData.password2
         })
         .then(res => {
+          state.errors = {};
           console.log(res);
           router.push('/login');
         })
