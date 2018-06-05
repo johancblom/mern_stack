@@ -20,13 +20,13 @@ export const store = new Vuex.Store({
     }
   },
   mutations: {
-    register(state) {
+    register(state, registerData) {
       Vue.http
         .post('/users/register', {
-          name: state.user.name,
-          email: state.user.email,
-          password: state.user.password,
-          password2: state.user.password2
+          name: registerData.name,
+          email: registerData.email,
+          password: registerData.password,
+          password2: registerData.password2
         })
         .then(res => {
           console.log(res);
@@ -35,6 +35,32 @@ export const store = new Vuex.Store({
         .catch(error => {
           state.errors = error.data;
         });
+    },
+    login(state, loginData) {
+      console.log(loginData);
+      Vue.http
+        .post('/users/login', {
+          email: loginData.email,
+          password: loginData.password
+        })
+        .then(res => {
+          state.errors = {};
+          console.log(res);
+          router.push('/dashboard');
+        })
+        .catch(error => {
+          console.log(error);
+          state.errors = error.data;
+        });
+    }
+  },
+  actions: {
+    register(context, registerData) {
+      console.log(registerData);
+      context.commit('register', registerData);
+    },
+    login(context, loginData) {
+      context.commit('login', loginData);
     }
   }
 });

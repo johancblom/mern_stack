@@ -15,7 +15,7 @@
                       class="form-control form-control-lg"
                       v-bind:class="{ 'is-invalid': errors.name }"
                       placeholder="Name"
-                      v-model="user.name"
+                      v-model="userData.name"
                       name="name"
                     />
                     <div v-if="errors.name" class="invalid-feedback">{{errors.name}}</div>
@@ -26,7 +26,7 @@
                       class="form-control form-control-lg"
                       v-bind:class="{ 'is-invalid': errors.email }"
                       placeholder="Email Address"
-                      v-model="user.email"
+                      v-model="userData.email"
                       name="email"
                       onChange={this.onChange}
                     />
@@ -44,7 +44,7 @@
                       v-bind:class="{ 'is-invalid': errors.password }"
                       placeholder="Password"
                       name="password"
-                      v-model="user.password"
+                      v-model="userData.password"
                       onChange={this.onChange}
                     />
                     <div v-if="errors.password" class="invalid-feedback">{{errors.password}}</div>
@@ -57,7 +57,7 @@
                       v-bind:class="{ 'is-invalid': errors.password2 }"
                       placeholder="Confirm Password"
                       name="password2"
-                      v-model="user.password2"
+                      v-model="userData.password2"
                       onChange={this.onChange}
                     />
                     <div v-if="errors.password2" class="invalid-feedback">{{errors.password2}}</div>
@@ -76,22 +76,17 @@
       </template>
       <script>
 export default {
+  data() {
+    return {
+      userData: {
+        name: '',
+        email: '',
+        password: '',
+        password2: ''
+      }
+    };
+  },
   computed: {
-    // name() {
-    //   return this.$store.state.name;
-    // },
-    email() {
-      return this.$store.state.email;
-    },
-    password() {
-      return this.$store.state.password;
-    },
-    password2() {
-      return this.$store.state.password2;
-    },
-    user() {
-      return this.$store.state.user;
-    },
     errors() {
       return this.$store.state.errors;
     }
@@ -99,7 +94,7 @@ export default {
   methods: {
     onSubmit: function(e) {
       e.preventDefault();
-      this.$store.commit('register');
+      this.$store.dispatch('register', this.userData);
     }
   }
 };
