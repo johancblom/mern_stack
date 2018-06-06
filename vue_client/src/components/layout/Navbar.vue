@@ -23,7 +23,17 @@
               </li>
             </ul>
 
-            <ul class="navbar-nav ml-auto">
+            <ul v-if="user.isAuthenticated" class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a href="#"  @click="logoutUser" class="nav-link">
+                  <img class="rounded-circle" v-bind:src="user.details.avatar" v-bind:alt="user.details.name" style='width: "25px", marginRight: "5px"' title="You must have a Gravatar connected to your email to display an image"/>{{' '}}
+                  Logout
+                </a>
+              </li>
+            </ul>
+
+
+            <ul v-else class="navbar-nav ml-auto">
               <li class="nav-item">
                 <router-link class="nav-link" to="/register">
                   Sign Up
@@ -41,9 +51,24 @@
 </template>
 
 <script>
-import VueRouter from 'vue-router';
-export default {};
+import VueRouter from "vue-router";
+export default {
+  computed: {
+    user() {
+      return this.$store.state.user;
+    }
+  },
+  methods: {
+    logoutUser() {
+      this.$store.dispatch("logoutUser");
+    }
+  }
+};
 </script>
 
 <style scoped>
+ul li a img {
+  width: 25px;
+  height: 25px;
+}
 </style>

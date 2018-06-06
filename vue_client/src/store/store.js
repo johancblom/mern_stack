@@ -1,28 +1,28 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
-import { router } from '../main';
+import Vue from "vue";
+import Vuex from "vuex";
+import { router } from "../main";
+import axios from "axios";
+import setAuthToken from "../utils/setAuthToken";
+import jwt_decode from "jwt-decode";
 
 Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
     user: {
-      name: '',
-      email: '',
-      password: '',
-      password2: ''
+      isAuthenticated: false
     },
     errors: {
-      name: '',
-      email: '',
-      password: '',
-      password2: ''
+      name: "",
+      email: "",
+      password: "",
+      password2: ""
     }
   },
   mutations: {
     register(state, registerData) {
-      Vue.http
-        .post('/users/register', {
+      axios
+        .post("/users/register", {
           name: registerData.name,
           email: registerData.email,
           password: registerData.password,
@@ -31,37 +31,59 @@ export const store = new Vuex.Store({
         .then(res => {
           state.errors = {};
           console.log(res);
-          router.push('/login');
+          router.push("/login");
         })
         .catch(error => {
           state.errors = error.data;
         });
     },
     login(state, loginData) {
-      console.log(loginData);
-      Vue.http
-        .post('/users/login', {
+      axios
+        .post("/users/login", {
           email: loginData.email,
           password: loginData.password
         })
         .then(res => {
           state.errors = {};
-          console.log(res);
-          router.push('/dashboard');
+          state.user.isAuthenticated = true;
+          console.log(state.user);
+          const { token } = res.data;
+          localStorage.setItem("jwtToken", token);
+          setAuthToken(token);
+          const details = jwt_decode(token);
+          state.user = { ...state.user, details };
+          console.log(state.user);
+          router.push("/dashboard");
         })
         .catch(error => {
           console.log(error);
-          state.errors = error.data;
+          state.errors = error.response.data;
         });
+    },
+    setCurrentUser(state, details) {
+      state.user.isAuthenticated = true;
+      state.user = { ...state.user, details };
+    },
+    logoutUser(state) {
+      state.user.isAuthenticated = false;
+      state.user.details = {};
+      localStorage.removeItem("jwtToken");
+      router.push("/");
     }
   },
   actions: {
     register(context, registerData) {
       console.log(registerData);
-      context.commit('register', registerData);
+      context.commit("register", registerData);
     },
     login(context, loginData) {
-      context.commit('login', loginData);
+      context.commit("login", loginData);
+    },
+    setCurrentUser(context, decoded) {
+      context.commit("setCurrentUser", decoded);
+    },
+    logoutUser(context) {
+      context.commit("logoutUser");
     }
   }
 });

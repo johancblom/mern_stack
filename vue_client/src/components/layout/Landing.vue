@@ -25,7 +25,13 @@
       </template>
 
       <script>
-export default {};
+export default {
+  mounted() {
+    if (this.$store.state.user.isAuthenticated) {
+      this.$router.push("/dashboard");
+    }
+  }
+};
 </script>
 
 <style scoped>
