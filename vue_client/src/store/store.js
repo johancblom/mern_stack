@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import { router } from "../main";
-import axios from "axios";
-import setAuthToken from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { router } from '../main';
+import axios from 'axios';
+import setAuthToken from '../utils/setAuthToken';
+import jwt_decode from 'jwt-decode';
 
 Vue.use(Vuex);
 
@@ -13,52 +13,20 @@ export const store = new Vuex.Store({
       isAuthenticated: false
     },
     errors: {
-      name: "",
-      email: "",
-      password: "",
-      password2: ""
+      name: '',
+      email: '',
+      password: '',
+      password2: ''
     }
   },
   mutations: {
     register(state, registerData) {
-      axios
-        .post("/users/register", {
-          name: registerData.name,
-          email: registerData.email,
-          password: registerData.password,
-          password2: registerData.password2
-        })
-        .then(res => {
-          state.errors = {};
-          console.log(res);
-          router.push("/login");
-        })
-        .catch(error => {
-          state.errors = error.data;
-        });
+      state.errors = {};
     },
-    login(state, loginData) {
-      axios
-        .post("/users/login", {
-          email: loginData.email,
-          password: loginData.password
-        })
-        .then(res => {
-          state.errors = {};
-          state.user.isAuthenticated = true;
-          console.log(state.user);
-          const { token } = res.data;
-          localStorage.setItem("jwtToken", token);
-          setAuthToken(token);
-          const details = jwt_decode(token);
-          state.user = { ...state.user, details };
-          console.log(state.user);
-          router.push("/dashboard");
-        })
-        .catch(error => {
-          console.log(error);
-          state.errors = error.response.data;
-        });
+    login(state, details) {
+      state.errors = {};
+      state.user.isAuthenticated = true;
+      state.user = { ...state.user, details };
     },
     setCurrentUser(state, details) {
       state.user.isAuthenticated = true;
@@ -67,23 +35,53 @@ export const store = new Vuex.Store({
     logoutUser(state) {
       state.user.isAuthenticated = false;
       state.user.details = {};
-      localStorage.removeItem("jwtToken");
-      router.push("/");
+      localStorage.removeItem('jwtToken');
+      router.push('/');
+    },
+    error(state, error) {
+      state.errors = error.response.data;
     }
   },
   actions: {
     register(context, registerData) {
-      console.log(registerData);
-      context.commit("register", registerData);
+      axios
+        .post('/users/register', {
+          name: registerData.name,
+          email: registerData.email,
+          password: registerData.password,
+          password2: registerData.password2
+        })
+        .then(res => {
+          context.commit('register');
+          router.push('/login');
+        })
+        .catch(error => {
+          context.commit('error', error);
+        });
     },
     login(context, loginData) {
-      context.commit("login", loginData);
+      axios
+        .post('/users/login', {
+          email: loginData.email,
+          password: loginData.password
+        })
+        .then(res => {
+          const { token } = res.data;
+          localStorage.setItem('jwtToken', token);
+          setAuthToken(token);
+          const details = jwt_decode(token);
+          context.commit('login', details);
+          router.push('/dashboard');
+        })
+        .catch(error => {
+          context.commit('error', error);
+        });
     },
     setCurrentUser(context, decoded) {
-      context.commit("setCurrentUser", decoded);
+      context.commit('setCurrentUser', decoded);
     },
     logoutUser(context) {
-      context.commit("logoutUser");
+      context.commit('logoutUser');
     }
   }
 });

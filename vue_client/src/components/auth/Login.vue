@@ -43,15 +43,16 @@
       <script>
 export default {
   mounted() {
+    this.$store.commit('error', { response: { data: {} } });
     if (this.$store.state.user.isAuthenticated) {
-      this.$router.push("/dashboard");
+      this.$router.push('/dashboard');
     }
   },
   data() {
     return {
       userData: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       }
     };
   },
@@ -66,7 +67,7 @@ export default {
   methods: {
     onSubmit: function(e) {
       e.preventDefault();
-      this.$store.dispatch("login", this.userData);
+      this.$store.dispatch('login', this.userData);
     }
   }
 };

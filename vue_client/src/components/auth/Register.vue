@@ -76,6 +76,9 @@
       </template>
       <script>
 export default {
+  mounted() {
+    this.$store.commit('error', { response: { data: {} } });
+  },
   data() {
     return {
       userData: {
