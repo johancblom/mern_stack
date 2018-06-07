@@ -51,7 +51,7 @@
 </template>
 
 <script>
-import VueRouter from "vue-router";
+import VueRouter from 'vue-router';
 export default {
   computed: {
     user() {
@@ -60,7 +60,8 @@ export default {
   },
   methods: {
     logoutUser() {
-      this.$store.dispatch("logoutUser");
+      this.$store.dispatch('logoutUser');
+      this.$store.dispatch('clearCurrentProfile');
     }
   }
 };

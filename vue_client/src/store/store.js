@@ -17,7 +17,10 @@ export const store = new Vuex.Store({
       email: '',
       password: '',
       password2: ''
-    }
+    },
+    loading: false,
+    profile: null,
+    profiles: null
   },
   mutations: {
     register(state, registerData) {
@@ -40,6 +43,16 @@ export const store = new Vuex.Store({
     },
     error(state, error) {
       state.errors = error.response.data;
+    },
+    profileLoading(state) {
+      state.loading = true;
+    },
+    getProfile(state, data) {
+      state.loading = false;
+      state.profile = data;
+    },
+    clearProfile(state) {
+      state.profile = null;
     }
   },
   actions: {
@@ -82,6 +95,20 @@ export const store = new Vuex.Store({
     },
     logoutUser(context) {
       context.commit('logoutUser');
+    },
+    getCurrentProfile(context) {
+      context.commit('profileLoading');
+      axios
+        .get('/api/profile')
+        .then(res => {
+          context.commit('getProfile', res.data);
+        })
+        .catch(res => {
+          context.commit('getProfile', {});
+        });
+    },
+    clearCurrentProfile(context) {
+      context.commit('clearProfile');
     }
   }
 });
