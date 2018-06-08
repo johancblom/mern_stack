@@ -39,7 +39,7 @@ if (localStorage.jwtToken) {
   const currentTime = Date.now() / 1000;
   if (decoded.exp < currentTime) {
     store.dispatch("logoutUser");
-    store.dispatch("clearCurentProfile");
+    store.dispatch("clearCurrentProfile");
     // Redirect to login
     router.push("/login");
   }
