@@ -19,9 +19,13 @@
               <button @click="toggleDisplaySocialInputs" class="btn btn-light">Add Social Network Links</button>
               <span class="text-muted">Optional</span>
             </div>
-            <input type="submit" value="Submit" class="btn btn-info btn-block mt-4">
+            <input type="submit" value="Submit" class="btn btn-info btn-block mt-4" />
             <div v-if="displaySocialInputs == true">
               <InputGroup placeholder="Twitter Profile URL" name="twitter" icon="fab fa-twitter" value="" />
+              <InputGroup placeholder="Facebook Profile URL" name="facebook" icon="fab fa-facebook" value="" />
+              <InputGroup placeholder="Linkedin Profile URL" name="linkedin" icon="fab fa-linkedin" value="" />
+              <InputGroup placeholder="YouTube Channel URL" name="youtube" icon="fab fa-youtube" value="" />
+              <InputGroup placeholder="Instagram Page URL" name="instagram" icon="fab fa-instagram" value="" />   
             </div>
           </form>
         </div>
@@ -30,25 +34,27 @@
   </div>
 </template>
 <script>
-import TextFieldGroup from "../common/TextFieldGroup.vue";
-import SelectListGroup from "../common/SelectListGroup.vue";
-import TextAreaFieldGroup from "../common/TextAreaFieldGroup.vue";
+import TextFieldGroup from '../common/TextFieldGroup.vue';
+import SelectListGroup from '../common/SelectListGroup.vue';
+import TextAreaFieldGroup from '../common/TextAreaFieldGroup.vue';
+import InputGroup from '../common/InputGroup.vue';
 export default {
   components: {
     TextFieldGroup: TextFieldGroup,
     SelectListGroup: SelectListGroup,
-    TextAreaFieldGroup: TextAreaFieldGroup
+    TextAreaFieldGroup: TextAreaFieldGroup,
+    InputGroup: InputGroup
   },
   data() {
     return {
       userData: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       },
       options: [
-        { label: "Developer", value: "Developer" },
-        { label: "Manager", value: "Manager" },
-        { label: "Other", value: "Other" }
+        { label: 'Developer', value: 'Developer' },
+        { label: 'Manager', value: 'Manager' },
+        { label: 'Other', value: 'Other' }
       ],
       displaySocialInputs: false
     };
@@ -61,9 +67,10 @@ export default {
   methods: {
     onSubmit: function(e) {
       e.preventDefault();
-      console.log("submit");
+      console.log('submit');
     },
-    toggleDisplaySocialInputs: function() {
+    toggleDisplaySocialInputs: function(e) {
+      e.preventDefault();
       this.displaySocialInputs = !this.displaySocialInputs;
     }
   }
