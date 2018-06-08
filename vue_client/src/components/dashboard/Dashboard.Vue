@@ -4,17 +4,26 @@
       <div class="row">
         <div class="col-md-12">
           <h1>Dashboard</h1>
-          <h4 v-if="loading || !profile">Loading ...</h4>
-          <h2 v-else>Hello</h2>
+          <h4 v-if="loading || !profile"><Spinner/></h4>
+          <h4 v-else-if="Object.keys(profile).length > 0">TODO: DISPLAY PROFILE</h4>
+          <template v-else class="lead text-muted">
+            <p class="lead text-muted">Welcome {{ user.details.name }}</p>
+            <p>You have not yet setup a profile, please add some info</p>
+            <router-link to="/create-profile" class="btn btn-lg btn-info">Create profile</router-link>
+          </template>
         </div>
       </div>
     </div>
   </div>
 </template>
       <script>
+import Spinner from "../common/Spinner.vue";
 export default {
+  components: {
+    Spinner: Spinner
+  },
   mounted() {
-    this.$store.dispatch('getCurrentProfile');
+    this.$store.dispatch("getCurrentProfile");
   },
   computed: {
     user() {
