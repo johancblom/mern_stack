@@ -10,7 +10,8 @@
         :class="{ 'is-invalid': error }"
         :placeholder=placeholder
         :name=name
-        :value=value
+        @input="event => { $emit('input', event.target.value) }"
+
     />
     <div v-if="error" class="invalid-feedback">{{error}}</div>
   </div>
@@ -20,9 +21,8 @@
 export default {
   props: {
     placeholder: { type: String },
-    error: { type: String },
     name: { type: String },
-    value: { type: String },
+    error: { type: String },
     icon: {}
   }
 };

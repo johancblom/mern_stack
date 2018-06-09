@@ -4,9 +4,9 @@
       class="form-control form-control-lg"
       v-bind:class="{ 'is-invalid': error }"
       :name=name
-      :value=value
-      :onChange=onChange
       :placeholder=placeholder
+      @input="event => { $emit('input', event.target.value) }"
+      v-model="selected"
     >
       <option selected disabled value="">{{placeholder}}</option>
       <option v-for="option in selectOptions" v-bind:key="option.value">{{option.label}}</option>
@@ -17,16 +17,26 @@
 </template>
 <script>
 export default {
+  mounted() {
+    this.selected = this.value;
+  },
+  watch: {
+    value: function(newValue) {
+      this.selected = newValue;
+    }
+  },
   props: {
     placeholder: { type: String },
-    error: { type: String },
     name: { type: String },
     value: { type: String },
-    onChange: { type: String },
     info: { type: String },
     error: { type: String },
-    selectOptions: { type: Array },
-    selected: { type: Object }
+    selectOptions: { type: Array }
+  },
+  data() {
+    return {
+      selected: null
+    };
   }
 };
 </script>

@@ -1,9 +1,9 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import { router } from "../main";
-import axios from "axios";
-import setAuthToken from "../utils/setAuthToken";
-import jwt_decode from "jwt-decode";
+import Vue from 'vue';
+import Vuex from 'vuex';
+import { router } from '../main';
+import axios from 'axios';
+import setAuthToken from '../utils/setAuthToken';
+import jwt_decode from 'jwt-decode';
 
 Vue.use(Vuex);
 
@@ -13,10 +13,10 @@ export const store = new Vuex.Store({
       isAuthenticated: false
     },
     errors: {
-      name: "",
-      email: "",
-      password: "",
-      password2: ""
+      name: '',
+      email: '',
+      password: '',
+      password2: ''
     },
     loading: false,
     profile: null,
@@ -32,14 +32,19 @@ export const store = new Vuex.Store({
       state.user = { ...state.user, details };
     },
     setCurrentUser(state, details) {
-      state.user.isAuthenticated = true;
+      console.log(details);
+      if (details.keys) {
+        state.user.isAuthenticated = true;
+      } else {
+        state.user.isAuthenticated = false;
+      }
       state.user = { ...state.user, details };
     },
     logoutUser(state) {
       state.user.isAuthenticated = false;
       state.user.details = {};
-      localStorage.removeItem("jwtToken");
-      router.push("/");
+      localStorage.removeItem('jwtToken');
+      router.push('/');
     },
     error(state, error) {
       state.errors = error.response.data;
@@ -51,6 +56,9 @@ export const store = new Vuex.Store({
       state.loading = false;
       state.profile = data;
     },
+    createProfile(state, data) {
+      state.profile = data;
+    },
     clearProfile(state) {
       state.profile = null;
     }
@@ -58,57 +66,84 @@ export const store = new Vuex.Store({
   actions: {
     register(context, registerData) {
       axios
-        .post("/users/register", {
+        .post('/users/register', {
           name: registerData.name,
           email: registerData.email,
           password: registerData.password,
           password2: registerData.password2
         })
         .then(res => {
-          context.commit("register");
-          router.push("/login");
+          context.commit('register');
+          router.push('/login');
         })
         .catch(error => {
-          context.commit("error", error);
+          context.commit('error', error);
         });
     },
     login(context, loginData) {
       axios
-        .post("/users/login", {
+        .post('/users/login', {
           email: loginData.email,
           password: loginData.password
         })
         .then(res => {
           const { token } = res.data;
-          localStorage.setItem("jwtToken", token);
+          localStorage.setItem('jwtToken', token);
           setAuthToken(token);
           const details = jwt_decode(token);
-          context.commit("login", details);
-          router.push("/dashboard");
+          context.commit('login', details);
+          router.push('/dashboard');
         })
         .catch(error => {
-          context.commit("error", error);
+          context.commit('error', error);
         });
     },
     setCurrentUser(context, decoded) {
-      context.commit("setCurrentUser", decoded);
+      context.commit('setCurrentUser', decoded);
     },
     logoutUser(context) {
-      context.commit("logoutUser");
+      context.commit('logoutUser');
     },
     getCurrentProfile(context) {
-      context.commit("profileLoading");
+      context.commit('profileLoading');
       axios
-        .get("/api/profile")
+        .get('/profile')
         .then(res => {
-          context.commit("getProfile", res.data);
+          context.commit('getProfile', res.data);
         })
         .catch(res => {
-          context.commit("getProfile", {});
+          context.commit('getProfile', {});
         });
     },
+    createProfile(context, profileData) {
+      console.log(profileData);
+      axios
+        .post('/profile', profileData)
+        .then(res => {
+          context.commit('createProfile', res.data);
+          router.push('/dashboard');
+        })
+        .catch(error => {
+          context.commit('error', error);
+        });
+      context.commit('createProfile', profileData);
+    },
     clearCurrentProfile(context) {
-      context.commit("clearProfile");
+      context.commit('clearProfile');
+    },
+    deleteAccount(context) {
+      if (window.confirm('Are you sure? This can NOT be undone')) {
+        axios
+          .delete('/profile')
+          .then(res => {
+            router.push('/login');
+            this.dispatch('setCurrentUser', {});
+          })
+          .catch(err => {
+            console.log(err);
+            context.commit('errors', err);
+          });
+      }
     }
   }
 });

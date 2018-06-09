@@ -47,6 +47,7 @@ module.exports = {
     noInfo: true,
     overlay: true,
     proxy: {
+      '/profile': 'http://localhost:5000/api',
       '/users': 'http://localhost:5000/api'
     }
   },

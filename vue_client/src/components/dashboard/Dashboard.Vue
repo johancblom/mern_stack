@@ -5,7 +5,12 @@
         <div class="col-md-12">
           <h1>Dashboard</h1>
           <h4 v-if="loading || !profile"><Spinner/></h4>
-          <h4 v-else-if="Object.keys(profile).length > 0">TODO: DISPLAY PROFILE</h4>
+          <div v-else-if="Object.keys(profile).length > 0">
+            <p class="lead text-muted">Welcome <router-link :to="{ path:`/profile/${profile.handle}`}"> {{ user.details.name }}</router-link></p>
+            <ProfileActions/>
+            <div id="deleteAccount"></div>
+            <button class="btn btn-danger" @click="onDeleteClick">Delete My Account</button>
+          </div>
           <template v-else class="lead text-muted">
             <p class="lead text-muted">Welcome {{ user.details.name }}</p>
             <p>You have not yet setup a profile, please add some info</p>
@@ -17,13 +22,15 @@
   </div>
 </template>
       <script>
-import Spinner from "../common/Spinner.vue";
+import Spinner from '../common/Spinner.vue';
+import ProfileActions from './ProfileActions.vue';
 export default {
   components: {
-    Spinner: Spinner
+    Spinner: Spinner,
+    ProfileActions: ProfileActions
   },
   mounted() {
-    this.$store.dispatch("getCurrentProfile");
+    this.$store.dispatch('getCurrentProfile');
   },
   computed: {
     user() {
@@ -36,9 +43,16 @@ export default {
       return this.$store.state.loading;
     }
   },
-  methods: {}
+  methods: {
+    onDeleteClick() {
+      this.$store.dispatch('deleteAccount');
+    }
+  }
 };
 </script>
 
 <style scoped>
+#deleteAccount {
+  margin-bottom: 160px;
+}
 </style>
