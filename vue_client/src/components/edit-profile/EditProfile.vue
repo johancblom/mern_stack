@@ -3,8 +3,8 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 m-auto">
-          <h1 class="display-4 text-center">Create Your Profile</h1>
-          <p class="lead text-center">Let's get some information to make your profile stand out</p>
+          <h1 class="display-4 text-center">Edit Your Profile</h1>
+          <p class="lead text-center">Add or Update your data</p>
           <small class="d-block pb-3">* = required fields</small>
           <form noValidate @submit="onSubmit">
             <TextFieldGroup placeholder="* Profile Handle" name="handle" v-model="profileData.handle" info="A unique handle for your profile URL. Your full name, company name, nickname, etc (This CAN'T be changed later)" :error="errors.handle"/>
@@ -45,23 +45,27 @@ export default {
     TextAreaFieldGroup: TextAreaFieldGroup,
     InputGroup: InputGroup
   },
+  mounted() {
+    // console.log(this.$store.state);
+    // this.profileData = this.$store.state.profile;
+  },
   data() {
     return {
-      profileData: {
-        handle: '',
-        status: '',
-        company: '',
-        website: '',
-        city: '',
-        skills: '',
-        githubusername: '',
-        bio: '',
-        twitter: '',
-        facebook: '',
-        linkedin: '',
-        youtube: '',
-        instagram: ''
-      },
+      // profileData: {
+      //   handle: '',
+      //   status: '',
+      //   company: '',
+      //   website: '',
+      //   city: '',
+      //   skills: '',
+      //   githubusername: '',
+      //   bio: '',
+      //   twitter: '',
+      //   facebook: '',
+      //   linkedin: '',
+      //   youtube: '',
+      //   instagram: ''
+      // },
       options: [
         { label: 'Developer', value: 'Developer' },
         { label: 'Manager', value: 'Manager' },
@@ -71,6 +75,9 @@ export default {
     };
   },
   computed: {
+    profileData() {
+      return this.$store.state.profile;
+    },
     errors() {
       return this.$store.state.errors;
     },

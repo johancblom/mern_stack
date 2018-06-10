@@ -5,6 +5,7 @@
       v-bind:class="{ 'is-invalid': error }"
       :placeholder=placeholder
       :name=name
+      :value=value
       @input="event => { $emit('input', event.target.value) }"
 
     />
@@ -14,7 +15,7 @@
 </template>
 <script>
 export default {
-  props: ['placeholder', 'name', 'info', 'error']
+  props: ['placeholder', 'name', 'value', 'info', 'error']
 };
 </script>
 <style scoped>

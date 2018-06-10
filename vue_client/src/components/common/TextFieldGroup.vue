@@ -7,6 +7,7 @@
       :placeholder=placeholder
       :name=name
       :error=error
+      :value=value
       @input="event => { $emit('input', event.target.value) }"
     />
     <small v-if="info" class="form-text text-muted">{{info}}</small>

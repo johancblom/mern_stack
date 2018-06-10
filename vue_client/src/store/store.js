@@ -54,7 +54,7 @@ export const store = new Vuex.Store({
     },
     getProfile(state, data) {
       state.loading = false;
-      state.profile = data;
+      state.profile = { ...data, skills: data.skills.join() };
     },
     createProfile(state, data) {
       state.profile = data;
@@ -116,7 +116,6 @@ export const store = new Vuex.Store({
         });
     },
     createProfile(context, profileData) {
-      console.log(profileData);
       axios
         .post('/profile', profileData)
         .then(res => {
