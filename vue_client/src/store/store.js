@@ -22,6 +22,15 @@ export const store = new Vuex.Store({
     profile: null,
     profiles: null
   },
+  getters: {
+    profile: state => {
+      return {
+        ...state.profile,
+        skills: state.profile.skills.join(),
+        social: state.profile.social || {}
+      };
+    }
+  },
   mutations: {
     register(state, registerData) {
       state.errors = {};
@@ -54,7 +63,8 @@ export const store = new Vuex.Store({
     },
     getProfile(state, data) {
       state.loading = false;
-      state.profile = { ...data, skills: data.skills.join() };
+      const skills = data.skills ? data.skills.join() : null;
+      state.profile = data;
     },
     createProfile(state, data) {
       state.profile = data;
@@ -119,13 +129,14 @@ export const store = new Vuex.Store({
       axios
         .post('/profile', profileData)
         .then(res => {
-          context.commit('createProfile', res.data);
+          //context.commit('createProfile', res.data);
+          context.commit('error', { response: { data: {} } });
           router.push('/dashboard');
         })
         .catch(error => {
           context.commit('error', error);
         });
-      context.commit('createProfile', profileData);
+      //context.commit('createProfile', profileData);
     },
     clearCurrentProfile(context) {
       context.commit('clearProfile');

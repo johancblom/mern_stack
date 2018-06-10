@@ -3,8 +3,7 @@
     <div class="container">
       <div class="row">
         <div class="col-md-8 m-auto">
-          <h1 class="display-4 text-center">Edit Your Profile</h1>
-          <p class="lead text-center">Add or Update your data</p>
+          <h1 class="display-4 text-center">Edit Profile</h1>
           <small class="d-block pb-3">* = required fields</small>
           <form noValidate @submit="onSubmit">
             <TextFieldGroup placeholder="* Profile Handle" name="handle" v-model="profileData.handle" info="A unique handle for your profile URL. Your full name, company name, nickname, etc (This CAN'T be changed later)" :error="errors.handle"/>
@@ -20,11 +19,11 @@
               <span class="text-muted">Optional</span>
             </div>
             <div v-if="displaySocialInputs == true">
-              <InputGroup placeholder="Twitter Profile URL" name="twitter" icon="fab fa-twitter" v-model="profileData.twitter" :error="errors.twitter" />
-              <InputGroup placeholder="Facebook Profile URL" name="facebook" icon="fab fa-facebook" v-model="profileData.facebook" :error="errors.facebook"/>
-              <InputGroup placeholder="Linkedin Profile URL" name="linkedin" icon="fab fa-linkedin" v-model="profileData.linkedin" :error="errors.linkedin" />
-              <InputGroup placeholder="YouTube Channel URL" name="youtube" icon="fab fa-youtube" v-model="profileData.youtube" :error="errors.youtube"/>
-              <InputGroup placeholder="Instagram Page URL" name="instagram" icon="fab fa-instagram" v-model="profileData.instagram" :error="errors.instagram"/>   
+              <InputGroup placeholder="Twitter Profile URL" name="twitter" icon="fab fa-twitter" v-model="profileData.social.twitter" :error="errors.twitter" />
+              <InputGroup placeholder="Facebook Profile URL" name="facebook" icon="fab fa-facebook" v-model="profileData.social.facebook" :error="errors.facebook"/>
+              <InputGroup placeholder="Linkedin Profile URL" name="linkedin" icon="fab fa-linkedin" v-model="profileData.social.linkedin" :error="errors.linkedin" />
+              <InputGroup placeholder="YouTube Channel URL" name="youtube" icon="fab fa-youtube" v-model="profileData.social.youtube" :error="errors.youtube"/>
+              <InputGroup placeholder="Instagram Page URL" name="instagram" icon="fab fa-instagram" v-model="profileData.social.instagram" :error="errors.instagram"/>   
             </div>
             <input type="submit" value="Submit" class="btn btn-info btn-block mt-4" />
           </form>
@@ -76,7 +75,7 @@ export default {
   },
   computed: {
     profileData() {
-      return this.$store.state.profile;
+      return this.$store.getters.profile;
     },
     errors() {
       return this.$store.state.errors;

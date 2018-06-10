@@ -10,6 +10,7 @@
         :class="{ 'is-invalid': error }"
         :placeholder=placeholder
         :name=name
+        :value=value
         @input="event => { $emit('input', event.target.value) }"
 
     />
@@ -22,6 +23,7 @@ export default {
   props: {
     placeholder: { type: String },
     name: { type: String },
+    value: { type: String },
     error: { type: String },
     icon: {}
   }
