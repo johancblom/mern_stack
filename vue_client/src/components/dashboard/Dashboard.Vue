@@ -8,6 +8,7 @@
           <div v-else-if="Object.keys(profile).length > 0">
             <p class="lead text-muted">Welcome <router-link :to="{ path:`/profile/${profile.handle}`}"> {{ user.details.name }}</router-link></p>
             <ProfileActions/>
+            <Experience :experience=profile.experience />
             <div id="deleteAccount"></div>
             <button class="btn btn-danger" @click="onDeleteClick">Delete My Account</button>
           </div>
@@ -22,15 +23,17 @@
   </div>
 </template>
       <script>
-import Spinner from '../common/Spinner.vue';
-import ProfileActions from './ProfileActions.vue';
+import Spinner from "../common/Spinner.vue";
+import ProfileActions from "./ProfileActions.vue";
+import Experience from "./Experience.vue";
 export default {
   components: {
     Spinner: Spinner,
-    ProfileActions: ProfileActions
+    ProfileActions: ProfileActions,
+    Experience: Experience
   },
   mounted() {
-    this.$store.dispatch('getCurrentProfile');
+    this.$store.dispatch("getCurrentProfile");
   },
   computed: {
     user() {
@@ -45,7 +48,7 @@ export default {
   },
   methods: {
     onDeleteClick() {
-      this.$store.dispatch('deleteAccount');
+      this.$store.dispatch("deleteAccount");
     }
   }
 };

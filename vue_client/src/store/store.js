@@ -41,7 +41,6 @@ export const store = new Vuex.Store({
       state.user = { ...state.user, details };
     },
     setCurrentUser(state, details) {
-      console.log(details);
       if (details.keys) {
         state.user.isAuthenticated = true;
       } else {
@@ -73,7 +72,6 @@ export const store = new Vuex.Store({
       state.profile = null;
     },
     addExperience(state, expData) {
-      console.log(expData);
       state.profile.experience.push({ ...expData });
     },
     addEducation(state, eduData) {
@@ -172,6 +170,16 @@ export const store = new Vuex.Store({
           router.push("/dashboard");
         })
         .catch(err => context.commit("error", err));
+    },
+    deleteExperience(context, id) {
+      axios
+        .delete("/profile/experience/" + id)
+        .then(res => {
+          this.dispatch("getCurrentProfile", res.data);
+        })
+        .catch(err => {
+          console.log(err);
+        });
     },
     addEducation(context, educationData) {
       axios
