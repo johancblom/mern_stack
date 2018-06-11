@@ -155,7 +155,6 @@ export const store = new Vuex.Store({
             this.dispatch("setCurrentUser", {});
           })
           .catch(err => {
-            console.log(err);
             context.commit("error", err);
           });
       }
@@ -178,7 +177,7 @@ export const store = new Vuex.Store({
           this.dispatch("getCurrentProfile", res.data);
         })
         .catch(err => {
-          console.log(err);
+          context.commit("error", err);
         });
     },
     addEducation(context, educationData) {
@@ -191,6 +190,16 @@ export const store = new Vuex.Store({
           router.push("/dashboard");
         })
         .catch(err => context.commit("error", err));
+    },
+    deleteEducation(context, id) {
+      axios
+        .delete("/profile/education/" + id)
+        .then(res => {
+          this.dispatch("getCurrentProfile", res.data);
+        })
+        .catch(err => {
+          context.commit("error", err);
+        });
     }
   }
 });

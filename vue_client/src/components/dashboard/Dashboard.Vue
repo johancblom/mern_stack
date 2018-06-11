@@ -9,6 +9,7 @@
             <p class="lead text-muted">Welcome <router-link :to="{ path:`/profile/${profile.handle}`}"> {{ user.details.name }}</router-link></p>
             <ProfileActions/>
             <Experience :experience=profile.experience />
+            <Education :education=profile.education />
             <div id="deleteAccount"></div>
             <button class="btn btn-danger" @click="onDeleteClick">Delete My Account</button>
           </div>
@@ -26,11 +27,14 @@
 import Spinner from "../common/Spinner.vue";
 import ProfileActions from "./ProfileActions.vue";
 import Experience from "./Experience.vue";
+import Education from "./Education.vue";
+
 export default {
   components: {
     Spinner: Spinner,
     ProfileActions: ProfileActions,
-    Experience: Experience
+    Experience: Experience,
+    Education: Education
   },
   mounted() {
     this.$store.dispatch("getCurrentProfile");
