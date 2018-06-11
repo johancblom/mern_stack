@@ -26,8 +26,8 @@ export const store = new Vuex.Store({
     profile: state => {
       return {
         ...state.profile,
-        skills: state.profile.skills.join(),
-        social: state.profile.social || {}
+        skills: state.profile ? state.profile.skills.join() : "",
+        social: state.profile ? state.profile.social : {}
       };
     }
   },
@@ -71,6 +71,13 @@ export const store = new Vuex.Store({
     },
     clearProfile(state) {
       state.profile = null;
+    },
+    addExperience(state, expData) {
+      console.log(expData);
+      state.profile.experience.push({ ...expData });
+    },
+    addEducation(state, eduData) {
+      state.profile.education.push(eduData);
     }
   },
   actions: {
@@ -158,7 +165,23 @@ export const store = new Vuex.Store({
     addExperience(context, experienceData) {
       axios
         .post("/profile/experience", experienceData)
-        .then(res => router.push("/dashboard"))
+        .then(res => {
+          context.commit("addExperience", res.data);
+          context.commit("error", { response: { data: {} } });
+
+          router.push("/dashboard");
+        })
+        .catch(err => context.commit("error", err));
+    },
+    addEducation(context, educationData) {
+      axios
+        .post("/profile/education", educationData)
+        .then(res => {
+          context.commit("addEducation", res.data);
+          context.commit("error", { response: { data: {} } });
+
+          router.push("/dashboard");
+        })
         .catch(err => context.commit("error", err));
     }
   }
