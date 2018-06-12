@@ -6,11 +6,13 @@ import CreateProfile from "./components/create-profile/CreateProfile.vue";
 import EditProfile from "./components/edit-profile/EditProfile.vue";
 import AddExperience from "./components/add-credentials/AddExperience.vue";
 import AddEducation from "./components/add-credentials/AddEducation.vue";
+import Profiles from "./components/profiles/Profiles.vue";
 
 export default [
   { path: "/", component: landing },
   { path: "/register", component: register },
   { path: "/login", component: login },
+  { path: "/profiles", component: Profiles },
   { path: "/dashboard", component: dashboard, meta: { requiresAuth: true } },
   {
     path: "/create-profile",

@@ -29,6 +29,11 @@ export const store = new Vuex.Store({
         skills: state.profile ? state.profile.skills.join() : "",
         social: state.profile ? state.profile.social : {}
       };
+    },
+    profiles: state => {
+      return {
+        ...state.profiles
+      };
     }
   },
   mutations: {
@@ -59,6 +64,9 @@ export const store = new Vuex.Store({
     },
     profileLoading(state) {
       state.loading = true;
+    },
+    getAllProfiles(state, data) {
+      state.profiles = data;
     },
     getProfile(state, data) {
       state.loading = false;
@@ -118,6 +126,17 @@ export const store = new Vuex.Store({
     },
     logoutUser(context) {
       context.commit("logoutUser");
+    },
+    getAllProfiles(context) {
+      console.log("getAllProfiles");
+      axios
+        .get("/profile/all")
+        .then(res => {
+          context.commit("getAllProfiles", res.data);
+        })
+        .catch(error => {
+          context.commit("error", error);
+        });
     },
     getCurrentProfile(context) {
       context.commit("profileLoading");
