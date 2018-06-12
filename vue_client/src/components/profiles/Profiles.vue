@@ -7,25 +7,26 @@
           <p class="lead text-center">
             Browse and connect with developers
           </p>
-          <h1 v-for="profile in profiles" :key="profile._id"> PROFILES HERE</h1>
+          <ProfileItem v-for="profile in profiles" :profile=profile :key="profile._id"></ProfileItem>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Spinner from "../common/Spinner.vue";
+import Spinner from '../common/Spinner.vue';
+import ProfileItem from './ProfileItem.vue';
 export default {
+  components: {
+    ProfileItem: ProfileItem
+  },
   mounted() {
-    this.$store.dispatch("getAllProfiles");
+    this.$store.dispatch('getAllProfiles');
   },
   computed: {
     profiles() {
-      this.$store.getters.profiles;
+      return this.$store.getters.profiles;
     }
-  },
-  components: {
-    Spinner: Spinner
   }
 };
 </script>
