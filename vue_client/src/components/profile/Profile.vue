@@ -11,7 +11,7 @@
           <div class="col-md-6" />
         </div>
 
-        <ProfileHeader />
+        <ProfileHeader :profile=profile />
         <ProfileAbout />
         <ProfileCreds />
         <ProfileGithub />
@@ -34,6 +34,11 @@ export default {
   mounted() {
     console.log('handle: ' + { ...this.$route.params });
     this.$store.dispatch('getProfileByHandle', this.$route.params.handle);
+  },
+  computed: {
+    profile() {
+      return this.$store.state.profile;
+    }
   }
 };
 </script>
